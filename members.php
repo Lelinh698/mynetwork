@@ -47,7 +47,7 @@ for ($j = 0 ; $j < $num ; ++$j)
     
     echo "<li><a href='members.php?view=" .
     
-    $row['username'] . "'>" . $row['user'] . "</a>";
+    $row['username'] . "'>" . $row['username'] . "</a>";
     $follow = "follow";
     
     $result1 = queryMysql("SELECT * FROM friends WHERE

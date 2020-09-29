@@ -1,0 +1,34 @@
+body {
+    overflow-x: hidden;
+}
+
+.col-sm-6 h1 {
+    text-align: center;
+}
+
+#content {
+    width: 70%;;
+    margin: auto;
+    height: 100px;
+}
+
+#post-block {
+    background-color: #fff;
+    border: 1px solid rgb(28, 27, 29);
+    padding: 40px 50px;
+}
+
+#image_upload_button {
+    position: absolute;
+    bottom: 42.8%;
+    right: 17.6%;
+    border-radius: 4px;
+
+}
+
+#btn-post {
+    min-width: 50%;
+    max-width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+}

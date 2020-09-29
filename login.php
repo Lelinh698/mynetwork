@@ -1,96 +1,105 @@
+<!DOCTYPE html>
 <?php
-    require_once 'header.php';
+    require_once 'functions.php';
     
-    // echo "<div class='main'><h3>Please enter your details to log in</h3>";
-    $error = $user = $pass = "";
+    $user = $pass = "";
     
-    if (isset($_POST['user']))
+    if (isset($_POST['login']))
     {
-        $user = sanitizeString($_POST['user']);
-        $pass = sanitizeString($_POST['pass']);
+        $username = sanitizeString($_POST['username']);
+        $pass = sanitizeString($_POST['password']);
         
-        if ($user == "" || $pass == "")
-            $error = "Not all fields were entered<br>";
+        $result = queryMySQL("SELECT user_id ,username, password FROM user
+        WHERE username='$username' AND password='$pass'");
+        
+        if ($result->num_rows == 0)
+        {
+          echo "<script>alert('Account was not found.')</script>";
+        }
         else
         {
-            $result = queryMySQL("SELECT username, password FROM user
-            WHERE username='$user' AND password='$pass'");
-            
-            if ($result->num_rows == 0)
-            {
-                $error = "<span class='error'>Username/Password
-                invalid</span><br><br>";
-            }
-            else
-            {
-                $_SESSION['user'] = $user;
-                $_SESSION['pass'] = $pass;
-                
-                header("Location: http://localhost/mynetwork/members.php?view=$user");
-                die();
+            ob_start();
+            session_start();
 
-                // die("You are now logged in. Please <a href='members.php?view=$user'>" .
-                // "click here</a> to continue.<br><br>");
-            }
+            $row = $result->fetch_array(MYSQLI_ASSOC);
+            
+            $_SESSION['user_id'] = $row['user_id'];
+            $_SESSION['username'] = $username;
+            $_SESSION['password'] = $pass;
+            
+            // header("Location: http://localhost/mynetwork/members.php?view=$user");
+            // die();
+            echo "<script>window.open('home.php', '_self')</script>";
         }
     }
 
 ?>
 
-<div class="login-box">
-  <div class="login-logo">
-    <a href="../../index2.html"><b>Admin</b>LTE</a>
-  </div>
-  <!-- /.login-logo -->
-  <div class="card">
-    <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+<html>
+<head>
+		<title>My network</title>
+		<meta charset='utf-8'>
+		<meta name='viewport' content='width=device-width, initial-scale=1'>
+		<meta http-equiv='x-ua-compatible' content='ie=edge'>
+		<!-- Font Awesome Icons -->
+		<link rel="stylesheet" href="fontawesome-free/css/all.min.css">
+		<!-- Theme style -->
+		<link rel="stylesheet" href="css/adminlte.min.css">
+		<!-- Google Font: Source Sans Pro -->
+		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+		<script src='js/jquery.min.js'></script>
+		<script src='js/bootstrap.bundle.min.js'></script>
+		<script src='js/adminlte.min.js'></script>
+	</head>
+  
+  <body>
+    <div class="wrapper">
+    <div class="login-box">
+      <div class="login-logo">
+        <a href="../../index2.html"><b>My network</b></a>
+      </div>
+      <!-- /.login-logo -->
+      <div class="card">
+        <div class="card-body login-card-body">
+          <p class="login-box-msg">Sign in to start your session</p>
 
-      <form action="login.php" method="post">
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" name="user" placeholder='Username'>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-user"></span>
+          <form action="login.php" method="post">
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" name="username" placeholder='Username' required>
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-user"></span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" name="pass" placeholder='Password'>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
+            <div class="input-group mb-3">
+              <input type="password" class="form-control" name="password" placeholder='Password' required>
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-lock"></span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-8">
-            <div class="icheck-primary">
-              <input type="checkbox" id="remember">
-              <label for="remember">
-                Remember Me
-              </label>
+            <div class="row">
+              <div class="col-8">
+                <div class="icheck-primary">
+                  <input type="checkbox" id="remember">
+                  <label for="remember">
+                    Remember Me
+                  </label>
+                </div>
+              </div>
+              <!-- /.col -->
+              <div class="col-4">
+                <button type="submit" class="btn btn-primary btn-block btn-flat" name="login">Sign In</button>
+              </div>
+              <!-- /.col -->
             </div>
-          </div>
-          <!-- /.col -->
-          <div class="col-4">
-            <button type="submit" class="btn btn-primary btn-block btn-flat" value="Login">Sign In</button>
-          </div>
-          <!-- /.col -->
+          </form>
         </div>
-      </form>
-
-      <p class="mb-1">
-        <a href="#">I forgot my password</a>
-      </p>
-      <p class="mb-0">
-        <a href="register.html" class="text-center">Register a new membership</a>
-      </p>
+        <!-- /.login-card-body -->
+      </div>
     </div>
-    <!-- /.login-card-body -->
-  </div>
-</div>
-
-</div>
-</body>
+    </div>
+  </body>
 </html>
