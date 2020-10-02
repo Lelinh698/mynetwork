@@ -1,8 +1,10 @@
+<!DOCTYPE html>
 <?php
     ob_start();
     session_start();
 
     require_once 'functions.php';
+    require_once 'config/database.php';
     
     $userstr = ' (Guest)';
     
@@ -14,7 +16,25 @@
     }
     else $loggedin = FALSE;
 ?>
-     
+<html>
+    <head>
+        <title>My network</title>
+		<meta charset='utf-8'>
+		<meta name='viewport' content='width=device-width, initial-scale=1'>
+		<meta http-equiv='x-ua-compatible' content='ie=edge'>
+		<!-- Font Awesome Icons -->
+		<link rel="stylesheet" href="fontawesome-free/css/all.min.css">
+		<!-- Theme style -->
+		<link rel="stylesheet" href="css/adminlte.min.css">
+        <link rel="stylesheet" href="css/style.css">
+		<!-- Google Font: Source Sans Pro -->
+		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+		<script src='js/jquery.min.js'></script>
+		<script src='js/bootstrap.bundle.min.js'></script>
+		<script src='js/adminlte.min.js'></script>
+    </head>
+    <body class="hold-transition layout-top-nav">
+        <div class="wrapper">
     <nav class="main-header navbar navbar-expand navbar-light navbar-blue">
         <div class="container">
             <a href="index3.html" class="navbar-brand">
